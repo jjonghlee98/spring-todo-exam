@@ -21,7 +21,11 @@
 	</insert>
 	
 	<update id="updateTodo">
-		update tbl_todo set title=#{title}, dueDate=#{dueDate}, writer=#{writer} where tno=#{tno}
+		update tbl_todo set title=#{title}, dueDate=#{dueDate}, finished=#{finished} where tno=#{tno}
 	</update>
+	
+	<delete id="deleteTodo">
+		delete from tbl_todo where tno=#{tno}
+	</delete>
     
 </mapper>

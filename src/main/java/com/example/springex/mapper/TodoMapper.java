@@ -10,14 +10,14 @@ public interface TodoMapper {
 	
 	List<TodoVO> selectList(PageRequestDTO pageRequestDTO);
 	
-	TodoVO selectTodo(TodoDTO todoDTO);
-	
-	int selectCount(PageRequestDTO pageRequestDTO);
-	
-	void insertTodo(TodoDTO todoDTO);
-	
-	void updateTodo(TodoDTO todoDTO);
+	TodoVO selectTodo(Long tno);
 	
 	void deleteTodo(Long tno);
+
+	int selectCount(PageRequestDTO pageRequestDTO);
+	
+	void insertTodo(TodoVO todoVO);
+	
+	void updateTodo(TodoVO todoVO);
 	
 }

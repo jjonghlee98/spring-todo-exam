@@ -28,4 +28,16 @@ public class PageRequestDTO {
 		return (page - 1) * 10;
 	}
 	
+	private String link;
+	
+	public String getLink() {
+		if (link == null) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("page=" + this.page);
+			builder.append("&size=" + this.size);
+			link = builder.toString();
+		}
+		return link;
+	}
+	
 }

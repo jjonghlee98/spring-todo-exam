@@ -13,7 +13,7 @@ public class PageResponseDTO<E> {
 	
 	private int size;
 	
-	private int total; 
+	private int total;
 	
 	private int start;
 	
