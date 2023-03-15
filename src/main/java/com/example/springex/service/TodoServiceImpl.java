@@ -19,58 +19,51 @@ import lombok.RequiredArgsConstructor;
 public class TodoServiceImpl implements TodoService {
 
 	private final TodoMapper todoMapper;
-	
+
 	private final ModelMapper modelMapper;
-	
+
 	@Override
 	public PageResponseDTO<TodoDTO> getList(PageRequestDTO pageRequestDTO) {
 		List<TodoVO> voList = todoMapper.selectList(pageRequestDTO);
-		List<TodoDTO> dtoList = voList.stream()
-				.map(vo -> modelMapper.map(vo, TodoDTO.class))
-				.collect(Collectors.toList());
-		
+		List<TodoDTO> dtoList = voList.stream().map(vo -> modelMapper.map(vo, TodoDTO.class)).collect(Collectors.toList());
+
 		int total = todoMapper.selectCount(pageRequestDTO);
-		
-		PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll()
-				.pageRequestDTO(pageRequestDTO)
-				.total(total)
-				.dtoList(dtoList)
-				.build();
-		
+
+		PageResponseDTO<TodoDTO> pageResponseDTO = PageResponseDTO.<TodoDTO>withAll().pageRequestDTO(pageRequestDTO).total(total).dtoList(dtoList).build();
+
 		return pageResponseDTO;
 	}
 
 	@Override
 	public void register(TodoDTO todoDTO) {
 		TodoVO vo = modelMapper.map(todoDTO, TodoVO.class);
-		
+
 		todoMapper.insertTodo(vo);
-		
+
 	}
 
 	@Override
 	public TodoDTO getTodo(Long tno) {
-		
+
 		TodoVO vo = todoMapper.selectTodo(tno);
 		TodoDTO dto = modelMapper.map(vo, TodoDTO.class);
-		
+
 		return dto;
 	}
 
 	@Override
 	public void modify(TodoDTO todoDTO) {
 		TodoVO vo = modelMapper.map(todoDTO, TodoVO.class);
-		
+
 		todoMapper.updateTodo(vo);
-		
+
 	}
 
 	@Override
 	public void remove(Long tno) {
-		
+
 		todoMapper.deleteTodo(tno);
-		
+
 	}
-	
 
 }

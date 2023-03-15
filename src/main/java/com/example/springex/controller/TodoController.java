@@ -27,78 +27,83 @@ import lombok.extern.log4j.Log4j2;
 public class TodoController {
 
 	private final TodoService todoService;
-	
+
 	@GetMapping("/list")
 	public void list(@Valid PageRequestDTO pageRequestDTO, BindingResult bindingResult, Model model) {
-		
+
 		log.info(pageRequestDTO);
 
 		if (bindingResult.hasErrors()) {
 			pageRequestDTO = PageRequestDTO.builder().build();
 		}
-		
+
 		model.addAttribute("responseDTO", todoService.getList(pageRequestDTO));
-		
+
 	}
-	
+
 	@GetMapping("/register")
 	public void registerGET() {
+
 		log.info("/register.......");
+
 	}
-	
-	@PostMapping("/register")
-	public String registerPOST(@Valid TodoDTO todoDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-		
-		log.info(todoDTO);
-		
-		if (bindingResult.hasErrors()) {
-			bindingResult.getAllErrors();
-			
-			return "redirect:/todo/register";
-		}
-		
-		todoService.register(todoDTO);
-		
-		return "redirect:/todo/list";
-	}
-	
-	@GetMapping({"/read", "/modify"})
+
+	@GetMapping({ "/read", "/modify" })
 	public void read(Long tno, PageRequestDTO pageRequestDTO, Model model) {
 		log.info("/read.........");
-		
+
 		model.addAttribute("read", todoService.getTodo(tno));
 	}
-	
+
+	@PostMapping("/register")
+	public String registerPOST(@Valid TodoDTO todoDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+
+		log.info(todoDTO);
+
+		if (bindingResult.hasErrors()) {
+			bindingResult.getAllErrors();
+
+			return "redirect:/todo/register";
+		}
+
+		todoService.register(todoDTO);
+
+		return "redirect:/todo/list";
+	}
+
 	@PostMapping("/modify")
 	public String modify(@Valid TodoDTO todoDTO, PageRequestDTO pageRequestDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
-		
+
 		log.info("/modify..........");
-		
+
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("Error", bindingResult.getAllErrors());
-			
+
 			redirectAttributes.addAttribute("tno", todoDTO.getTno());
-			
+
 			return "redirect:/todo/modify";
 		}
-		
+
 		todoService.modify(todoDTO);
+
+		// 검색 / 필터링 기능이 사이트에 포함되어 있는 경우. 주석처리
+		// redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
+		// redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
 		
-		redirectAttributes.addAttribute("page", pageRequestDTO.getPage());
-		redirectAttributes.addAttribute("size", pageRequestDTO.getSize());
-		
-		return "redirect:/todo/list";
-		
+		redirectAttributes.addAttribute("tno", todoDTO.getTno());
+
+		return "redirect:/todo/read";
+
 	}
-	
+
 	@PostMapping("/remove")
-	public String remove(TodoDTO todoDTO, RedirectAttributes redirectAttributes) {
+	public String remove(TodoDTO todoDTO, PageRequestDTO pageRequestDTO, RedirectAttributes redirectAttributes) {
 		log.info("/remove......." + todoDTO);
-		
+
 		todoService.remove(todoDTO.getTno());
-		
-		return "redirect:/todo/list";
-		
+
+		return "redirect:/todo/list?" + pageRequestDTO.getLink();
+
 	}
-	
+
 }

@@ -7,17 +7,17 @@ import com.example.springex.dto.PageRequestDTO;
 import com.example.springex.dto.TodoDTO;
 
 public interface TodoMapper {
-	
+
 	List<TodoVO> selectList(PageRequestDTO pageRequestDTO);
-	
+
 	TodoVO selectTodo(Long tno);
-	
+
 	void deleteTodo(Long tno);
 
 	int selectCount(PageRequestDTO pageRequestDTO);
-	
+
 	void insertTodo(TodoVO todoVO);
-	
+
 	void updateTodo(TodoVO todoVO);
-	
+
 }
